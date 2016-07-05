@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Tagadata</string>
+    <string name="url">http://tagadata.com/api</string>
 </resources>

@@ -12,19 +12,21 @@ import android.widget.ImageView;
 
 
 import com.app.bedomax.tagadata.R;
+import com.app.bedomax.tagadata.models.New;
 
 import java.util.List;
 
 public class NewsRecyclerAdapter extends RecyclerView.Adapter implements View.OnClickListener {
 
     private Context context;
-    //private List<Movie> moviesList;
+    private List<New> newsList;
     private View.OnClickListener listener;
+    private OnLoadMoreListener onLoadMoreListener;
 
 
-    public NewsRecyclerAdapter(Context context, List<String> moviesList) {
+    public NewsRecyclerAdapter(Context context, List<New> news) {
         this.context = context;
-        //this.moviesList = moviesList;
+        this.newsList = news;
     }
     @Override
     public void onClick(View v) {
@@ -32,6 +34,10 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter implements View.On
             listener.onClick(v);
     }
 
+
+    public interface OnLoadMoreListener {
+        void onLoadMore();
+    }
 
     public void setClickListener(View.OnClickListener listener) {
         this.listener = listener;
@@ -68,5 +74,9 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter implements View.On
     public int getItemCount() {
         //return moviesList.size();
         return 0;
+    }
+
+    public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
+        this.onLoadMoreListener = onLoadMoreListener;
     }
 }
