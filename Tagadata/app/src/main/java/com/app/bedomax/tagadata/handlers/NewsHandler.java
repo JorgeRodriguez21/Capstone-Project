@@ -11,6 +11,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.app.bedomax.tagadata.R;
 import com.app.bedomax.tagadata.models.New;
 import com.app.bedomax.tagadata.services.VolleyService;
+import com.app.bedomax.tagadata.utils.Pager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -30,28 +31,41 @@ public class NewsHandler {
     private Context context;
     protected RequestQueue requestQueue;
     private VolleyService volley;
+    private New mainNew;
+    private Pager pager;
 
     public NewsHandler(Context context) {
         this.context = context;
         news = new ArrayList<>();
         volley = VolleyService.getInstance(this.context);
         requestQueue = volley.getRequestQueue();
+        pager = new Pager();
+
     }
 
     public void searchNews(final HandlerCallback.listener listener){
-        String url = context.getString(R.string.url);
+        String url = context.getString(R.string.url).concat(""+pager.getPageNumber());
         JsonArrayRequest request = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray jsonArray) {
                 try {
-
                     Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
                     New newObject;
                     for (int i = 0; i<jsonArray.length();i++){
 
                         JSONObject o = jsonArray.getJSONObject(i);
                         newObject = gson.fromJson(o.toString(), New.class);
-                        news.add(newObject);
+                        if(i==0 && pager.getPageNumber() == 1){
+                            mainNew = newObject;
+                        }else if(pager.getPageNumber()==1){
+                            news.add(newObject);
+                        }else{
+                            if(i==0){
+                                if(news.get(news.size()-1) == null)
+                                news.remove(news.size()-1);
+                            }
+                            news.add(newObject);
+                        }
                     }
 
                 } catch (Exception e) {
@@ -86,7 +100,15 @@ public class NewsHandler {
         }
     }
 
+    public New getMainNew() {
+        return mainNew;
+    }
+
     public List<New> getNews() {
         return news;
+    }
+
+    public Pager getPager() {
+        return pager;
     }
 }

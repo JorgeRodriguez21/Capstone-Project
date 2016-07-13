@@ -39,10 +39,10 @@
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
                 app:contentScrim="@color/colorPrimary"
-                app:expandedTitleMarginBottom="25dp"
                 app:expandedTitleMarginEnd="1dp"
-                app:expandedTitleMarginStart="48dp"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:expandedTitleTextAppearance="@style/toolbarTitleProfileExpanded"
+                app:collapsedTitleTextAppearance="@style/toolbarTitleProfileCollapsed"
                 app:layout_collapseMode="parallax">
 
                 <RelativeLayout
@@ -59,14 +59,26 @@
                         android:fitsSystemWindows="true"
                         android:scaleType="centerCrop" />
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:layout_alignParentTop="true"
+                        android:background="@drawable/top_profile" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="165dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/bottom_profile" />
+
                 </RelativeLayout>
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/profileToolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:transitionName="title"
-                    app:layout_collapseMode="pin">
+                    app:layout_collapseMode="pin"
+                    app:titleTextColor="@color/white">
 
                 </android.support.v7.widget.Toolbar>
 

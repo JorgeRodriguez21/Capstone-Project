@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     protected Toolbar profileToobar;
     private NewsHandler handler;
     private NewsRecyclerAdapter adapter;
+    private GridLayoutManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,33 +40,34 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
         handler = new NewsHandler(this);
-        adapter = new NewsRecyclerAdapter(this,handler.getNews());
-        GridLayoutManager manager = new GridLayoutManager(getApplicationContext(), 2);
+        manager = new GridLayoutManager(getApplicationContext(), 2);
         newsRV.setLayoutManager(manager);
+        adapter = new NewsRecyclerAdapter(this,handler.getNews(),newsRV);
         newsRV.setAdapter(adapter);
-        handler.searchNews(new HandlerCallback.listener() {
-            @Override
-            public void onResponse(int status) {
-                adapter.notifyDataSetChanged();
-                mainNewImage.setImageURI(Uri.parse(handler.getNews().get(0).getImage()));
-                profileToobar.setTitle(handler.getNews().get(0).getName());
-            }
-        });
+        handler.searchNews(searchNews);
 
         adapter.setOnLoadMoreListener(new NewsRecyclerAdapter.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
                 //add null , so the adapter will check view_type and show progress bar at bottom
-               /* if (vehiclesList.size() > 0)
-                    if (vehiclesList.get(vehiclesList.size() - 1) != null) {
-                        if (pager.hasNextPage()) {
-                            pager.passPage();
-                            vehiclesList.add(null);
-                            mAdapter.notifyItemInserted(vehiclesList.size() - 1);
-                            customLoadMoreDataFromApi();
-                        }
-                    }*/
+                if (handler.getNews().size() > 0)
+                    if (handler.getNews().get(handler.getNews().size() - 1) != null) {
+                            handler.getPager().passPage();
+                            handler.getNews().add(null);
+                            adapter.notifyItemInserted(handler.getNews().size() - 1);
+                            handler.searchNews(searchNews);
+                    }
             }
         });
     }
+
+    public HandlerCallback.listener searchNews = new HandlerCallback.listener() {
+        @Override
+        public void onResponse(int status) {
+                adapter.notifyDataSetChanged();
+                mainNewImage.setImageURI(Uri.parse(handler.getMainNew().getImage()));
+                profileToobar.setTitle(handler.getMainNew().getName());
+                adapter.setLoaded();
+        }
+    };
 }
