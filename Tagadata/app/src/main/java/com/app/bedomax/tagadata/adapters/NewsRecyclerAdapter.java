@@ -6,13 +6,13 @@ package com.app.bedomax.tagadata.adapters;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.bedomax.tagadata.R;
@@ -59,8 +59,6 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter implements View.On
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
-
-
                     int totalItemCount = gridLayoutManager.getItemCount();
                     int lastVisibleItem = gridLayoutManager.findLastVisibleItemPosition();
                     if (!loading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
@@ -102,11 +100,13 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter implements View.On
 
         public TextView newsTitle;
         public SimpleDraweeView newsPreviewImage;
+        public RelativeLayout holderRL;
 
         public ViewHolder(View view) {
             super(view);
             newsTitle = (TextView) view.findViewById(R.id.newTitle);
             newsPreviewImage = (SimpleDraweeView) view.findViewById(R.id.previewImage);
+            holderRL = (RelativeLayout) view.findViewById(R.id.holderRL);
         }
     }
 
@@ -121,10 +121,11 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter implements View.On
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = null;
+        View v;
         RecyclerView.ViewHolder vh;
         if(viewType == VIEW_ITEM) {
             v = LayoutInflater.from(context).inflate(R.layout.news_item, parent, false);
+            v.setOnClickListener(this);
             vh = new ViewHolder(v);
         }else{
             v = LayoutInflater.from(context).inflate(R.layout.progressbar_item, parent, false);
@@ -150,15 +151,11 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter implements View.On
                     .setOldController(((ViewHolder) holder).newsPreviewImage.getController())
                     .build();
             ((ViewHolder) holder).newsPreviewImage.setController(controller);
-           /* Picasso.with(context)
-                    .load(context.getString(R.string.images_url_500)+moviesList.get(position).getPosterPath())
-                    .into(((ViewHolder) holder).cover);
-            ((ViewHolder) holder).cover.setTag(moviesList.get(position));*/
+            ((ViewHolder) holder).holderRL.setTag(newsList.get(position));
         }
     }
     @Override
     public int getItemCount() {
-        //return moviesList.size();
         return newsList.size()+1;
     }
 

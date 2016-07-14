@@ -74,4 +74,29 @@ public class New implements Parcelable {
     public boolean isVisible() {
         return visible;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        New aNew = (New) o;
+
+        if (visible != aNew.visible) return false;
+        if (id != null ? !id.equals(aNew.id) : aNew.id != null) return false;
+        if (name != null ? !name.equals(aNew.name) : aNew.name != null) return false;
+        if (image != null ? !image.equals(aNew.image) : aNew.image != null) return false;
+        return url != null ? url.equals(aNew.url) : aNew.url == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (image != null ? image.hashCode() : 0);
+        result = 31 * result + (url != null ? url.hashCode() : 0);
+        result = 31 * result + (visible ? 1 : 0);
+        return result;
+    }
 }

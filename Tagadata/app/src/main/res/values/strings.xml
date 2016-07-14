@@ -3,4 +3,8 @@
     <string name="url">http://tagadata.com/api?page=</string>
     <string name="imagen_descriptiva_de_la_noticia">Imagen descriptiva de la noticia</string>
     <string name="titulo_de_la_noticia">Título de la noticia</string>
+    <string name="urlWord">url</string>
+    <string name="titleWord">title</string>
+    <string name="favorite">favorite</string>
+    <string name="newWord">new</string>
 </resources>

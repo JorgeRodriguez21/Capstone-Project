@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:pt="http://schemas.android.com/apk/res-auto" >
+
+
+    <item android:id="@+id/favorite"
+        android:title="Favorite"
+        android:icon="@drawable/favorite_icon"
+        pt:showAsAction="always"
+        />
+
+<!--    <item android:id="@+id/advancedFilter"
+        android:title="Filtros Avanzados"
+        android:icon="@drawable/ic_zoom_in"
+        pt:showAsAction="always"
+        />-->
+
+
+
+</menu>
