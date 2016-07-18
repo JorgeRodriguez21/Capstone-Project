@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:pt="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/more"
+        android:icon="@drawable/ic_more_vert"
+        android:title="more"
+        pt:showAsAction="always">
+
+        <menu>
+
+            <item
+                android:id="@+id/update"
+                android:title="Actualizar"
+                pt:showAsAction="never" />
+
+            <item
+                android:id="@+id/favorite"
+                android:icon="@drawable/favorite_icon"
+                android:title="Favoritos"
+                pt:showAsAction="never" />
+
+            <item
+                android:id="@+id/aboutUs"
+                android:title="Acerca de ..."
+                pt:showAsAction="never" />
+
+        </menu>
+
+    </item>
+
+</menu>

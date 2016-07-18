@@ -60,8 +60,6 @@ public class DescriptionActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.favorite_menu, menu);
         item = menu.findItem(R.id.favorite);
-        System.out.println("Está aquí");
-        System.out.println(isFavorite());
         if (item != null) {
             if (isFavorite())
                 item.setIcon(R.drawable.favorited_icon);
@@ -118,16 +116,13 @@ public class DescriptionActivity extends AppCompatActivity {
     }
 
     public void share(View v) {
-
         New object = getIntent().getParcelableExtra(getString(R.string.newWord));
 
             Intent share = new Intent(android.content.Intent.ACTION_SEND);
             share.setType("text/plain");
-
             share.putExtra(Intent.EXTRA_SUBJECT, object.getName());
             share.putExtra(Intent.EXTRA_TEXT, object.getUrl());
             startActivity(Intent.createChooser(share, "Comparte el enlace!"));
-
     }
 
 }

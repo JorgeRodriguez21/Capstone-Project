@@ -11,6 +11,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,26 +35,32 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter implements View.On
     private OnLoadMoreListener onLoadMoreListener;
     private static int width;
     private final int VIEW_ITEM = 1;
+    private final int VIEW_FAV_ITEM = 2;
     private final int VIEW_PROG = 0;
     private boolean loading;
     private int visibleThreshold = 2;
+    private boolean isFavorite;
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
 
     @Override
     public int getItemViewType(int position) {
-        if(newsList.size()>0 && position < newsList.size())
+        if(isFavorite){
+            return VIEW_FAV_ITEM;
+        }else{
             return newsList.get(position) != null ? VIEW_ITEM : VIEW_PROG;
-        else{
-            return VIEW_PROG;
         }
-
     }
 
 
-    public NewsRecyclerAdapter(Context context, List<New> news, RecyclerView recyclerView) {
+    public NewsRecyclerAdapter(Context context, List<New> news, RecyclerView recyclerView, boolean ... isFavorite) {
         this.context = context;
         this.newsList = news;
+        if(isFavorite.length>0)
+        this.isFavorite = isFavorite[0];
         if (recyclerView.getLayoutManager() instanceof GridLayoutManager) {
-
             final GridLayoutManager gridLayoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
@@ -119,10 +126,28 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter implements View.On
         }
     }
 
+    public static class FavoriteViewHolder extends RecyclerView.ViewHolder {
+        public SimpleDraweeView photo;
+        public TextView newTitle;
+        public LinearLayout favoriteItemLL;
+
+        public FavoriteViewHolder(View v) {
+            super(v);
+            photo = (SimpleDraweeView) v.findViewById(R.id.photo);
+            newTitle = (TextView) v.findViewById(R.id.new_title);
+            favoriteItemLL = (LinearLayout) v.findViewById(R.id.favoriteItemLL);
+        }
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v;
         RecyclerView.ViewHolder vh;
+        if(viewType == VIEW_FAV_ITEM) {
+            v = LayoutInflater.from(context).inflate(R.layout.favorite_item, parent, false);
+            v.setOnClickListener(this);
+            vh = new FavoriteViewHolder(v);
+        }else
         if(viewType == VIEW_ITEM) {
             v = LayoutInflater.from(context).inflate(R.layout.news_item, parent, false);
             v.setOnClickListener(this);
@@ -136,6 +161,21 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter implements View.On
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if(holder instanceof FavoriteViewHolder){
+            ((FavoriteViewHolder) holder).newTitle.setText(newsList.get(position).getName());
+            ImageRequest request;
+            getDimensions();
+            request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(newsList.get(position).getImage()))
+                    .setResizeOptions(new ResizeOptions(55, 55))
+                    .setAutoRotateEnabled(true)
+                    .build();
+            DraweeController controller = Fresco.newDraweeControllerBuilder()
+                    .setImageRequest((request))
+                    .setOldController(((FavoriteViewHolder) holder).photo.getController())
+                    .build();
+            ((FavoriteViewHolder) holder).photo.setController(controller);
+            (((FavoriteViewHolder) holder).favoriteItemLL).setTag(newsList.get(position));
+        }else
         if(holder instanceof ProgressViewHolder){
             ((ProgressViewHolder) holder).progressBar.setIndeterminate(true);
         }else{
@@ -156,7 +196,7 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter implements View.On
     }
     @Override
     public int getItemCount() {
-        return newsList.size()+1;
+        return newsList.size();
     }
 
     public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {

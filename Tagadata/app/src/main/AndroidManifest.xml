@@ -18,6 +18,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.DescriptionActivity"/>
+        <activity android:name=".activities.FavoriteResultActivity"/>
+        <activity android:name=".activities.AboutUsActivity"/>
     </application>
 
 </manifest>

@@ -2,11 +2,15 @@ package com.app.bedomax.tagadata.activities;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import com.app.bedomax.tagadata.R;
 import com.app.bedomax.tagadata.adapters.NewsRecyclerAdapter;
@@ -62,13 +66,25 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 New newObject = (New) v.getTag();
-                Intent intent = new Intent(getApplicationContext(), DescriptionActivity.class);
-                intent.putExtra(getString(R.string.urlWord), newObject.getUrl());
-                intent.putExtra(getString(R.string.titleWord), newObject.getName());
-                intent.putExtra(getString(R.string.newWord), newObject);
-                startActivity(intent);
+                startActivity(getDataToIntent(newObject));
             }
         });
+
+        mainNewImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(getDataToIntent(handler.getMainNew()));
+            }
+        });
+    }
+
+    @NonNull
+    private Intent getDataToIntent(New newObject) {
+        Intent intent = new Intent(getApplicationContext(), DescriptionActivity.class);
+        intent.putExtra(getString(R.string.urlWord), newObject.getUrl());
+        intent.putExtra(getString(R.string.titleWord), newObject.getName());
+        intent.putExtra(getString(R.string.newWord), newObject);
+        return intent;
     }
 
     public HandlerCallback.listener searchNews = new HandlerCallback.listener() {
@@ -77,7 +93,43 @@ public class MainActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
                 mainNewImage.setImageURI(Uri.parse(handler.getMainNew().getImage()));
                 profileToobar.setTitle(handler.getMainNew().getName());
+                setSupportActionBar(profileToobar);
                 adapter.setLoaded();
         }
     };
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        Intent intent;
+
+        switch (item.getItemId()){
+            case R.id.favorite:
+                intent = new Intent(getApplicationContext(),FavoriteResultActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.aboutUs:
+                intent = new Intent(getApplicationContext(),AboutUsActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.update:
+                updateNews();
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private void updateNews(){
+        handler.getNews().clear();
+        handler.getPager().resetPage();
+        handler.searchNews(searchNews);
+    }
 }
