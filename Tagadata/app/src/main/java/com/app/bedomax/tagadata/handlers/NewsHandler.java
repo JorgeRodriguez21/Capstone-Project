@@ -55,15 +55,16 @@ public class NewsHandler {
 
                         JSONObject o = jsonArray.getJSONObject(i);
                         newObject = gson.fromJson(o.toString(), New.class);
-                        if(i==0 && pager.getPageNumber() == 1){
+                        if(i==0 && pager.getPageNumber() == 1 && newObject.isVisible()){
                             mainNew = newObject;
-                        }else if(pager.getPageNumber()==1){
+                        }else if(pager.getPageNumber()==1 && newObject.isVisible()){
                             news.add(newObject);
                         }else{
                             if(i==0){
                                 if(news.get(news.size()-1) == null)
                                 news.remove(news.size()-1);
                             }
+                            if(newObject.isVisible())
                             news.add(newObject);
                         }
                     }
