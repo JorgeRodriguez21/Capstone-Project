@@ -20,6 +20,22 @@
         <activity android:name=".activities.DescriptionActivity"/>
         <activity android:name=".activities.FavoriteResultActivity"/>
         <activity android:name=".activities.AboutUsActivity"/>
+        <receiver android:name=".providers.WidgetProvider" >
+            <intent-filter>
+
+                <!-- This widget provider receives broadcast with following action name or simply onUpdate of AppWidgetProvider is called -->
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <!-- linking up xml file of appwidget-provider to AppWidgetProvider -->
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info" />
+        </receiver>
+
+        <service
+            android:name=".services.WidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
     </application>
 
 </manifest>

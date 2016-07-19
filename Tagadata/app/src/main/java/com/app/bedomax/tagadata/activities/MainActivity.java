@@ -17,8 +17,12 @@ import com.app.bedomax.tagadata.adapters.NewsRecyclerAdapter;
 import com.app.bedomax.tagadata.handlers.HandlerCallback;
 import com.app.bedomax.tagadata.handlers.NewsHandler;
 import com.app.bedomax.tagadata.models.New;
+import com.app.bedomax.tagadata.services.ListProvider;
+import com.app.bedomax.tagadata.services.WidgetService;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
+
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -90,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
     public HandlerCallback.listener searchNews = new HandlerCallback.listener() {
         @Override
         public void onResponse(int status) {
+                ListProvider.newsList = (ArrayList<New>) handler.getNews();
                 adapter.notifyDataSetChanged();
                 mainNewImage.setImageURI(Uri.parse(handler.getMainNew().getImage()));
                 profileToobar.setTitle(handler.getMainNew().getName());
