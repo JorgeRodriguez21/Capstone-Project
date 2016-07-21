@@ -7,6 +7,15 @@ android {
     compileSdkVersion 24
     buildToolsVersion "24.0.0"
 
+    signingConfigs {
+        production {
+            keyAlias 'tagadatakey'
+            keyPassword 'mojadas1'
+            storeFile file('key/tagadata.jks')
+            storePassword 'mojadas1'
+        }
+    }
+
     defaultConfig {
         applicationId "com.app.bedomax.tagadata"
         minSdkVersion 17
@@ -20,7 +29,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    productFlavors {
+        production {
+            minSdkVersion 15
+            applicationId 'com.app.bedomax.tagadata'
+            signingConfig signingConfigs.production
+            targetSdkVersion 23
+        }
+    }
 }
+
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')

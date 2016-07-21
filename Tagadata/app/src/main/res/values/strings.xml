@@ -12,4 +12,5 @@
     <string name="about_us">Acerca de Nosotros</string>
     <string name="about_us_url">http://tagadata.com/sobre-nosotros</string>
     <string name="no_data">No hay datos</string>
+    <string name="share_button">This button shares the new in social networks</string>
 </resources>
