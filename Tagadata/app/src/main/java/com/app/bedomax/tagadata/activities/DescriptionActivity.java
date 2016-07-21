@@ -11,11 +11,13 @@ import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import com.app.bedomax.tagadata.R;
-import com.app.bedomax.tagadata.models.New;
-import com.app.bedomax.tagadata.utils.SharedPreferencesUtil;
+import com.app.bedomax.tagadata.database.MyDatabase;
+import com.app.bedomax.tagadata.models.NewModel;
+import com.app.bedomax.tagadata.models.NewModel_Table;
+import com.raizlabs.android.dbflow.sql.language.Select;
+import com.raizlabs.android.dbflow.structure.provider.ContentUtils;
 
 import java.util.ArrayList;
 
@@ -88,35 +90,30 @@ public class DescriptionActivity extends AppCompatActivity {
     }
 
     private boolean isFavorite() {
-        ArrayList<New> favorites = SharedPreferencesUtil.obtainFavorites(this);
-        if (favorites == null) {
-            favorites = new ArrayList<>();
-        }
-        New object = getIntent().getParcelableExtra(getString(R.string.newWord));
 
-        if (favorites.contains(object)) {
+        NewModel object = getIntent().getParcelableExtra(getString(R.string.newWord));
+
+        ArrayList <NewModel> favorites = (ArrayList<NewModel>) new Select().from(NewModel.class).where(NewModel_Table.id.is(object.getId())).queryList();
+
+        if (favorites.size()>0){
             return true;
         }
         return false;
     }
 
     private void saveOrDeleteFavorites() {
-        ArrayList<New> favorites = SharedPreferencesUtil.obtainFavorites(this);
-        if (favorites == null) {
-            favorites = new ArrayList<>();
-        }
-        New object = getIntent().getParcelableExtra(getString(R.string.newWord));
+
+        NewModel object = getIntent().getParcelableExtra(getString(R.string.newWord));
 
         if (isFavorite()) {
-            favorites.remove(object);
+            ContentUtils.delete(getContentResolver(),MyDatabase.NewProviderModel.CONTENT_URI,object);
         } else {
-            favorites.add(object);
+            ContentUtils.insert(getContentResolver(),MyDatabase.NewProviderModel.CONTENT_URI,object);
         }
-        SharedPreferencesUtil.saveFavorites(this, favorites);
     }
 
     public void share(View v) {
-        New object = getIntent().getParcelableExtra(getString(R.string.newWord));
+        NewModel object = getIntent().getParcelableExtra(getString(R.string.newWord));
 
             Intent share = new Intent(android.content.Intent.ACTION_SEND);
             share.setType("text/plain");

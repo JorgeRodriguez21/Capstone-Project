@@ -9,7 +9,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.app.bedomax.tagadata.R;
-import com.app.bedomax.tagadata.models.New;
+import com.app.bedomax.tagadata.models.NewModel;
 import com.app.bedomax.tagadata.services.VolleyService;
 import com.app.bedomax.tagadata.utils.Pager;
 import com.google.gson.Gson;
@@ -27,11 +27,11 @@ import java.util.List;
 public class NewsHandler {
 
 
-    private List<New> news;
+    private List<NewModel> news;
     private Context context;
     protected RequestQueue requestQueue;
     private VolleyService volley;
-    private New mainNew;
+    private NewModel mainNew;
     private Pager pager;
 
     public NewsHandler(Context context) {
@@ -50,11 +50,11 @@ public class NewsHandler {
             public void onResponse(JSONArray jsonArray) {
                 try {
                     Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-                    New newObject;
+                    NewModel newObject;
                     for (int i = 0; i<jsonArray.length();i++){
 
                         JSONObject o = jsonArray.getJSONObject(i);
-                        newObject = gson.fromJson(o.toString(), New.class);
+                        newObject = gson.fromJson(o.toString(), NewModel.class);
                         if(i==0 && pager.getPageNumber() == 1 && newObject.isVisible()){
                             mainNew = newObject;
                         }else if(pager.getPageNumber()==1 && newObject.isVisible()){
@@ -101,11 +101,11 @@ public class NewsHandler {
         }
     }
 
-    public New getMainNew() {
+    public NewModel getMainNew() {
         return mainNew;
     }
 
-    public List<New> getNews() {
+    public List<NewModel> getNews() {
         return news;
     }
 

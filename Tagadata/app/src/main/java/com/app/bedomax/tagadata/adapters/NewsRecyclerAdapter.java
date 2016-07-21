@@ -17,7 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.bedomax.tagadata.R;
-import com.app.bedomax.tagadata.models.New;
+import com.app.bedomax.tagadata.models.NewModel;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -30,7 +30,7 @@ import java.util.List;
 public class NewsRecyclerAdapter extends RecyclerView.Adapter implements View.OnClickListener {
 
     private Context context;
-    private List<New> newsList;
+    private List<NewModel> newsList;
     private View.OnClickListener listener;
     private OnLoadMoreListener onLoadMoreListener;
     private static int width;
@@ -55,7 +55,7 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter implements View.On
     }
 
 
-    public NewsRecyclerAdapter(Context context, List<New> news, RecyclerView recyclerView, boolean ... isFavorite) {
+    public NewsRecyclerAdapter(Context context, List<NewModel> news, RecyclerView recyclerView, boolean ... isFavorite) {
         this.context = context;
         this.newsList = news;
         if(isFavorite.length>0)

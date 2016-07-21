@@ -9,7 +9,7 @@ import android.widget.RemoteViewsService;
 
 import com.app.bedomax.tagadata.R;
 import com.app.bedomax.tagadata.activities.DescriptionActivity;
-import com.app.bedomax.tagadata.models.New;
+import com.app.bedomax.tagadata.models.NewModel;
 
 import java.util.ArrayList;
 
@@ -19,7 +19,7 @@ import java.util.ArrayList;
  *
  */
 public class ListProvider implements RemoteViewsService.RemoteViewsFactory {
-    public static ArrayList <New> newsList = new ArrayList<>();
+    public static ArrayList <NewModel> newsList = new ArrayList<>();
     private Context context = null;
     private int appWidgetId;
 
@@ -38,7 +38,7 @@ public class ListProvider implements RemoteViewsService.RemoteViewsFactory {
     public RemoteViews getViewAt(int position) {
         final RemoteViews remoteView = new RemoteViews(
                 context.getPackageName(), R.layout.widget_row);
-        New listItem = newsList.get(position);
+        NewModel listItem = newsList.get(position);
         remoteView.setTextViewText(R.id.name, listItem.getName());
         Intent next = new Intent(context, DescriptionActivity.class);
         next.putExtra(context.getString(R.string.urlWord), listItem.getUrl());

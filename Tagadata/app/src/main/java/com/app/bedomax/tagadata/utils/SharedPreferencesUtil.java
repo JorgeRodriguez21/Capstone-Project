@@ -8,7 +8,7 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
 import com.app.bedomax.tagadata.R;
-import com.app.bedomax.tagadata.models.New;
+import com.app.bedomax.tagadata.models.NewModel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -35,18 +35,18 @@ public class SharedPreferencesUtil {
         return sharedPref.getString(key, "");
     }
 
-   public static void saveFavorites(final Context context, ArrayList<New> favoriteNews){
+   public static void saveFavorites(final Context context, ArrayList<NewModel> favoriteNews){
 
         Gson gson = createGsonObject();
         String json = gson.toJson(favoriteNews);
         saveStringInSharedPreferences (context,context.getString(R.string.favorite),json);
     }
 
-    public static ArrayList<New> obtainFavorites(final Context context){
+    public static ArrayList<NewModel> obtainFavorites(final Context context){
 
         Gson gson = createGsonObject();
         String json =obtainStringFromSharedPreferences(context,context.getString(R.string.favorite));
-        Type type = new TypeToken<ArrayList<New>>() {}.getType();
+        Type type = new TypeToken<ArrayList<NewModel>>() {}.getType();
         return gson.fromJson(json,type);
     }
 

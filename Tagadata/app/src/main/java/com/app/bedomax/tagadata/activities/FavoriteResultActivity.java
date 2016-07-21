@@ -13,8 +13,8 @@ import android.view.View;
 
 import com.app.bedomax.tagadata.R;
 import com.app.bedomax.tagadata.adapters.NewsRecyclerAdapter;
-import com.app.bedomax.tagadata.models.New;
-import com.app.bedomax.tagadata.utils.SharedPreferencesUtil;
+import com.app.bedomax.tagadata.models.NewModel;
+import com.raizlabs.android.dbflow.sql.language.Select;
 
 import java.util.ArrayList;
 
@@ -40,7 +40,7 @@ public class FavoriteResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.favorite_result_activity);
         ButterKnife.inject(this);
-        ArrayList <New> favoriteNews = SharedPreferencesUtil.obtainFavorites(this);
+        ArrayList <NewModel> favoriteNews = (ArrayList<NewModel>) new Select().from(NewModel.class).queryList();
         toolbar.setTitle(R.string.favorites);
         toolbar.setNavigationIcon(R.drawable.left_arrow_icon);
         setSupportActionBar(toolbar);
@@ -49,7 +49,7 @@ public class FavoriteResultActivity extends AppCompatActivity {
         newsRecyclerAdapter.setClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                New newObject = (New) v.getTag();
+                NewModel newObject = (NewModel) v.getTag();
                 getDataToIntent(newObject);
             }
         });
@@ -59,7 +59,7 @@ public class FavoriteResultActivity extends AppCompatActivity {
     }
 
     @NonNull
-    private void getDataToIntent(New newObject) {
+    private void getDataToIntent(NewModel newObject) {
         Intent intent = new Intent(getApplicationContext(), DescriptionActivity.class);
         intent.putExtra(getString(R.string.urlWord), newObject.getUrl());
         intent.putExtra(getString(R.string.titleWord), newObject.getName());

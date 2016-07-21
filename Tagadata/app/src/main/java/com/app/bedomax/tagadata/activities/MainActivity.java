@@ -16,9 +16,8 @@ import com.app.bedomax.tagadata.R;
 import com.app.bedomax.tagadata.adapters.NewsRecyclerAdapter;
 import com.app.bedomax.tagadata.handlers.HandlerCallback;
 import com.app.bedomax.tagadata.handlers.NewsHandler;
-import com.app.bedomax.tagadata.models.New;
+import com.app.bedomax.tagadata.models.NewModel;
 import com.app.bedomax.tagadata.services.ListProvider;
-import com.app.bedomax.tagadata.services.WidgetService;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -69,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.setClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                New newObject = (New) v.getTag();
+                NewModel newObject = (NewModel) v.getTag();
                 startActivity(getDataToIntent(newObject));
             }
         });
@@ -83,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @NonNull
-    private Intent getDataToIntent(New newObject) {
+    private Intent getDataToIntent(NewModel newObject) {
         Intent intent = new Intent(getApplicationContext(), DescriptionActivity.class);
         intent.putExtra(getString(R.string.urlWord), newObject.getUrl());
         intent.putExtra(getString(R.string.titleWord), newObject.getName());
@@ -94,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
     public HandlerCallback.listener searchNews = new HandlerCallback.listener() {
         @Override
         public void onResponse(int status) {
-                ListProvider.newsList = (ArrayList<New>) handler.getNews();
+                ListProvider.newsList = (ArrayList<NewModel>) handler.getNews();
                 adapter.notifyDataSetChanged();
                 mainNewImage.setImageURI(Uri.parse(handler.getMainNew().getImage()));
                 profileToobar.setTitle(handler.getMainNew().getName());

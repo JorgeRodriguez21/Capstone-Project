@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".application.TagadataApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -35,6 +36,11 @@
         <service
             android:name=".services.WidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <provider
+            android:authorities="com.app.bedomax.tagadata.provider"
+            android:exported="true"
+            android:name=".database.MyDatabase_Provider"/>
 
     </application>
 
